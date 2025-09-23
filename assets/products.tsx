@@ -37,7 +37,7 @@ export const PRODUCTS: Product[] = [
   maxQuantity: 5,
 },
 {
-  id: 1,
+  id: 3,
   title: "MacBook-pro-2024",
   slug:"MacBook-pro-2024",
   heroImage: require('../assets/images/head-set-1.jpg'),
@@ -54,7 +54,7 @@ export const PRODUCTS: Product[] = [
   maxQuantity: 5,
 },
 {
-  id: 1,
+  id: 4,
   title: "ps-5",
   slug:"ps-5",
   heroImage: require('../assets/images/ps-5-1.jpg'),
@@ -72,7 +72,7 @@ export const PRODUCTS: Product[] = [
   maxQuantity: 5,
 },
 {
-  id: 1,
+  id: 5,
   title: "samsung",
   slug:"samsung",
   heroImage: require('../assets/images/samsung-1.jpg'),
@@ -89,7 +89,7 @@ export const PRODUCTS: Product[] = [
   maxQuantity: 5,
 },
 {
-  id: 1,
+  id: 6,
   title: "nintendo-switch",
   slug:"samsung",
   heroImage: require('../assets/images/nintendo-switch-1.jpg'),
@@ -106,7 +106,7 @@ export const PRODUCTS: Product[] = [
   maxQuantity: 5,
 },
 {
-  id: 1,
+  id: 7,
   title: "i-phone",
   slug:"i-phone",
   heroImage: require('../assets/images/i-phone-1.jpg'),
