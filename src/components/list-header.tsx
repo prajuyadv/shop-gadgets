@@ -5,13 +5,12 @@ import {
   Image,
   Pressable,
   TouchableOpacity,
+  FlatList,
 } from "react-native";
 import React from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { Link } from "expo-router";
-import { FlatList } from "react-native";
-import { CATEGORIES } from "../../../assets/categories";
-
+import { CATEGORIES } from "../../assets/categories";
 
 const ListHeader = () => {
   return (
@@ -29,8 +28,9 @@ const ListHeader = () => {
           </View>
         </View>
 
-        {/* Right side: Shopping cart link */}
+        {/* Right side: Shopping cart and Sign-out */}
         <View style={styles.headerRight}>
+          {/* Cart */}
           <Link style={styles.cartContainer} href="/cart" asChild>
             <Pressable>
               {({ pressed }) => (
@@ -48,6 +48,8 @@ const ListHeader = () => {
               )}
             </Pressable>
           </Link>
+
+          {/* Sign-out */}
           <TouchableOpacity style={styles.signOutButton}>
             <FontAwesome name="sign-out" size={25} color="red" />
           </TouchableOpacity>
@@ -55,11 +57,13 @@ const ListHeader = () => {
       </View>
 
       {/* Hero Section */}
-      <View style={styles.heroContainer}></View>
-      <Image
-        source={require("../../../assets/images/hero.png")}
-        style={styles.heroImage}
-      />
+      <View style={styles.heroContainer}>
+        <Image
+          source={require("../../assets/images/hero.png")}
+          style={styles.heroImage}
+        />
+      </View>
+
       {/* Categories Section */}
       <View style={styles.categoriesContainer}>
         <Text style={styles.sectionTitle}>Categories</Text>
@@ -69,14 +73,14 @@ const ListHeader = () => {
             <Link asChild href={`/categories/${item.slug}`}>
               <Pressable style={styles.category}>
                 <Image
-                  source={{ uri: item.imageURL }}
+                  source={{ uri: item.imageUrl }}
                   style={styles.categoryImage}
                 />
                 <Text style={styles.categoryText}>{item.name}</Text>
               </Pressable>
             </Link>
           )}
-          keyExtractor={item =>item.name}
+          keyExtractor={(item) => item.slug}
           horizontal
           showsHorizontalScrollIndicator={false}
         />
@@ -103,6 +107,7 @@ const styles = StyleSheet.create({
   },
   headerRight: {
     flexDirection: "row",
+    alignItems: "center",
   },
   heroContainer: {
     paddingTop: 20,
@@ -142,5 +147,37 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 10,
     fontWeight: "bold",
+  },
+  signOutButton: {
+    marginLeft: 15,
+  },
+  heroImage: {
+    width: "100%",
+    height: 150,
+    resizeMode: "cover",
+    borderRadius: 10,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  category: {
+    alignItems: "center",
+    marginRight: 15,
+    backgroundColor: "#f9f9f9",
+    padding: 10,
+    borderRadius: 10,
+  },
+  categoryImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginBottom: 5,
+  },
+  categoryText: {
+    fontSize: 14,
+    fontWeight: "500",
+    textAlign: "center",
   },
 });
