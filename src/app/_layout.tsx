@@ -20,7 +20,7 @@ export default function RotLayout() {
         />
         <Stack.Screen
           name="cart"
-          options={{ presentation: "modal", title: "Cart" }}
+          options={{ presentation: "modal", title: "Shopping Cart " }}
         />
         <Stack.Screen
           name="auth"
