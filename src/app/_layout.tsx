@@ -1,10 +1,12 @@
 import { Stack } from "expo-router";
 import {ToastProvider} from "react-native-toast-notifications";
+import AuthProvider from "../providers/auth-provider";
 
 
-export default function RotLayout() {
+export default function RootLayout() {
   return (
     <ToastProvider>
+      <AuthProvider>
       <Stack>
         <Stack.Screen
           name="(shop)"
@@ -24,9 +26,10 @@ export default function RotLayout() {
         />
         <Stack.Screen
           name="auth"
-          options={{ headerShown: true, title: "Auth" }}
+          options={{ headerShown: false }}
         />
       </Stack>
+      </AuthProvider>
     </ToastProvider>
   );
 }
