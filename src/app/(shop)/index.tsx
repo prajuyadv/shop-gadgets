@@ -3,9 +3,11 @@ import React from "react";
 import { PRODUCTS } from "../../../assets/products";
 import ListHeader from "../../components/list-header";
 import ProductListItem from "../../components/product-list-item";
+import { useAuth } from "../../providers/auth-provider";
 
 const Home = () => {
-  console.log("PRODUCTS", PRODUCTS);
+  const {user} = useAuth();
+console.log(user);
   return (
     <View>
       <FlatList

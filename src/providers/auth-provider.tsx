@@ -22,46 +22,54 @@ const AuthContext = createContext<AuthData>({
 
 export default function AuthProvider({ children }: PropsWithChildren) {
   const [session, setSession] = useState<Session | null>(null);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<{
+    avatar_url: string;
+    created_at: string | null;
+    email: string;
+    expo_notification_token: string | null;
+    id: string;
+    stripe_customer_id: string | null;
+    type: string | null;
+  } | null>(null);
   const [mounting, setMounting] = useState(true);
 
   useEffect(() => {
-    const initAuth = async () => {
-      try {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
+    const fetchSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
 
-        setSession(session ?? null);
-        setUser(session?.user ?? null);
-      } catch (error) {
-        console.error("Error fetching session:", error);
-      } finally {
-        setMounting(false);
+      setSession(session);
+
+      if (session) {
+        const { data: user, error } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', session.user.id)
+          .single();
+
+        if (error) {
+          console.error('error', error);
+        } else {
+          setUser(user);
+        }
       }
+
+      setMounting(false);
     };
 
-    initAuth();
-
-    // 🔄 Listen for auth state changes
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setSession(session ?? null);
-        setUser(session?.user ?? null);
-      }
-    );
-
-    // 🧹 Cleanup on unmount
-    return () => {
-      listener?.subscription.unsubscribe();
-    };
+    fetchSession();
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
   }, []);
 
   return (
-    <AuthContext.Provider value={{ session, user, mounting }}>
+    <AuthContext.Provider value={{ session, mounting, user }}>
       {children}
     </AuthContext.Provider>
   );
 }
+
 
 export const useAuth = () => useContext(AuthContext);

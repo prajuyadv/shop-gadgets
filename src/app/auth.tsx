@@ -1,20 +1,31 @@
-import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import * as zod from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Redirect, Stack } from "expo-router";
 import { Toast } from "react-native-toast-notifications";
 import { supabase } from "../lib/supabase";
+import { useAuth } from "../providers/auth-provider";
+import { router } from "expo-router";
 
 const authSchema = zod.object({
   email: zod.string().email({ message: "Invalid email address" }),
-  password: zod.string().min(6, { message: "Password must be at least 6 characters long" }),
+  password: zod
+    .string()
+    .min(6, { message: "Password must be at least 6 characters long" }),
 });
 
 export default function Auth() {
-const [session] = useAuth();
+  const { session } = useAuth();
 
-if (session) return (<Redirect href='/'/>);
+  if (session) return <Redirect href="/" />;
 
   const {
     control,
@@ -28,32 +39,31 @@ if (session) return (<Redirect href='/'/>);
     },
   });
 
-
   const signIn = async (data: zod.infer<typeof authSchema>) => {
-   const {error} = await supabase.auth.signInWithPassword(data);
+    const { error } = await supabase.auth.signInWithPassword(data);
 
-   if(error) {
-    alert(error.message);
-   } else {
-    Toast.show("Signed In Successfully",{
-      type: 'success',
-      placement: 'top',
-      duration : 1500,
-    })
-   }
-  };
-
-  const signUp = async (data: zod.infer<typeof authSchema>) => {
-    const {error} = await supabase.auth.signUp(data);
-
-    if(error) {
-     alert(error.message);
+    if (error) {
+      alert(error.message);
     } else {
-     Toast.show("Signed Up Successfully",{
-       type: 'success',
-       placement: 'top',
-       duration : 1500,
-     })
+      Toast.show("Signed In Successfully", {
+        type: "success",
+        placement: "top",
+        duration: 1500,
+      });
+    }
+  };
+  
+  const signUp = async (data: zod.infer<typeof authSchema>) => {
+    const { error } = await supabase.auth.signUp(data);
+
+    if (error) {
+      alert(error.message);
+    } else {
+      Toast.show("Signed Up Successfully", {
+        type: "success",
+        placement: "top",
+        duration: 1500,
+      });
     }
   };
 
@@ -75,7 +85,10 @@ if (session) return (<Redirect href='/'/>);
           <Controller
             control={control}
             name="email"
-            render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
+            render={({
+              field: { value, onChange, onBlur },
+              fieldState: { error },
+            }) => (
               <>
                 <TextInput
                   placeholder="Email"
@@ -96,7 +109,10 @@ if (session) return (<Redirect href='/'/>);
           <Controller
             control={control}
             name="password"
-            render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
+            render={({
+              field: { value, onChange, onBlur },
+              fieldState: { error },
+            }) => (
               <>
                 <TextInput
                   placeholder="Password"

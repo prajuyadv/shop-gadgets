@@ -19,7 +19,7 @@ const ListHeader = () => {
   const {getItemCount} = useCartStore();
 
   const handleSignOut= async()=>{
-    await supabase.auth.signout();
+    await supabase.auth.signOut();
   }
   return (
     <View style={styles.headerContainer}>
