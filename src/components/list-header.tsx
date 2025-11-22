@@ -10,17 +10,16 @@ import {
 import React from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { Link } from "expo-router";
-import { CATEGORIES } from "../../assets/categories";
 import { useCartStore } from "../store/cart-store";
 import { supabase } from "../lib/supabase";
+import { Tables } from "../types/database.types";
 
+const ListHeader = ({ categories }: { categories: Tables<"category">[] }) => {
+  const { getItemCount } = useCartStore();
 
-const ListHeader = () => {
-  const {getItemCount} = useCartStore();
-
-  const handleSignOut= async()=>{
+  const handleSignOut = async () => {
     await supabase.auth.signOut();
-  }
+  };
   return (
     <View style={styles.headerContainer}>
       {/* Top Section */}
@@ -59,9 +58,9 @@ const ListHeader = () => {
 
           {/* Sign-out */}
           <TouchableOpacity
-           onPress={handleSignOut}
-           style={styles.signOutButton}
-           >
+            onPress={handleSignOut}
+            style={styles.signOutButton}
+          >
             <FontAwesome name="sign-out" size={25} color="red" />
           </TouchableOpacity>
         </View>
@@ -79,7 +78,7 @@ const ListHeader = () => {
       <View style={styles.categoriesContainer}>
         <Text style={styles.sectionTitle}>Categories</Text>
         <FlatList
-          data={CATEGORIES}
+          data={categories}
           renderItem={({ item }) => (
             <Link asChild href={`/categories/${item.slug}`}>
               <Pressable style={styles.category}>

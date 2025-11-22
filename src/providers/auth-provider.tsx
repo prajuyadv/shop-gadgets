@@ -46,7 +46,7 @@ export default function AuthProvider({ children }: PropsWithChildren) {
           .from('users')
           .select('*')
           .eq('id', session.user.id)
-          .single();
+          .maybeSingle();
 
         if (error) {
           console.error('error', error);
