@@ -11,13 +11,15 @@ import {
   FlatList,
 } from "react-native";
 import { useCartStore } from "../store/cart-store";
+import { createOrder } from "../api/api";
 
 type CartItemType = {
   id: number;
   title: string;
-  image: any;
+  heroImage: string;
   price: number;
   quantity: number;
+  maxQuantity: number;
 };
 
 type CartItemProps = {
@@ -30,7 +32,7 @@ type CartItemProps = {
 const CartItem = ({ item, onDecrement, onIncrement, onRemove }: CartItemProps) => {
   return (
     <View style={styles.cartItem}>
-      <Image source={item.image} style={styles.itemImage} />
+      <Image source={{uri:item.heroImage}} style={styles.itemImage} />
 
       <View style={styles.itemDetails}>
         <Text style={styles.itemTitle}>{item.title}</Text>
@@ -68,8 +70,10 @@ const CartItem = ({ item, onDecrement, onIncrement, onRemove }: CartItemProps) =
 export default function Cart() {
   const { items, removeItem, incrementItem, decrementItem, getTotalPrice } = useCartStore();
 
+  const {mutateAsync: createSupabaseOrder}= createOrder();
+  const { mutateasync: createSupabaseOrderItem } = createOrdrItem()
   const handleCheckout = () => {
-    Alert.alert("Proceeding to Checkout", `Total amount: $${getTotalPrice()}`);
+    
   };
 
   return (
