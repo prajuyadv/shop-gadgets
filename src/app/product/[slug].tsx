@@ -26,7 +26,7 @@ const ProductDetails = () => {
   const { items, addItem, incrementItem, decrementItem } = useCartStore();
   const cartItem = items.find((item) => item.id === product?.id);
 
-  const initialQuantity = cartItem ? cartItem.quantity : 1;
+  const initialQuantity = cartItem ? cartItem.quantity : 0;
 
   const [quantity, setQuantity] = useState(initialQuantity);
 

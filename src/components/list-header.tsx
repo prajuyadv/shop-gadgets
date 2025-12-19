@@ -31,7 +31,7 @@ const ListHeader = ({ categories }: { categories: Tables<"category">[] }) => {
               source={{ uri: "https://via.placeholder.com/40" }}
               style={styles.avatarImageContainer}
             />
-            <Text style={styles.avatarText}>Hello codewithHari</Text>
+            <Text style={styles.avatarText}>Shop Gadgets</Text>
           </View>
         </View>
 

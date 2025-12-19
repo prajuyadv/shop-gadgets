@@ -11,7 +11,7 @@ import {
   FlatList,
 } from "react-native";
 import { useCartStore } from "../store/cart-store";
-import { createOrder } from "../api/api";
+import { createOrder, createOrderItem } from "../api/api";
 
 type CartItemType = {
   id: number;
@@ -68,12 +68,39 @@ const CartItem = ({ item, onDecrement, onIncrement, onRemove }: CartItemProps) =
 };
 
 export default function Cart() {
-  const { items, removeItem, incrementItem, decrementItem, getTotalPrice } = useCartStore();
+  const { items, removeItem, incrementItem, decrementItem, getTotalPrice, resetCart } = useCartStore();
 
   const {mutateAsync: createSupabaseOrder}= createOrder();
-  const { mutateasync: createSupabaseOrderItem } = createOrdrItem()
-  const handleCheckout = () => {
-    
+  const { mutateAsync: createSupabaseOrderItem } = createOrderItem();
+  
+  const handleCheckout = async () => {
+    const totalPrice= parseFloat(getTotalPrice());
+
+    try{
+      await createSupabaseOrder (
+        {totalPrice},
+        {
+          onSuccess: data => {
+            createSupabaseOrderItem(
+              items.map(item => ({
+                orderId: data.id,
+                productId: item.id,
+                quantity: item.quantity,
+              })),
+              {
+                onSuccess: () => {
+                  alert('order created successfully');
+                  resetCart()
+                }
+              }
+            );
+          },
+        }
+      );
+    } catch(error) {
+     console.log(error);
+     alert('An error occurred while creating the order');
+    }
   };
 
   return (
